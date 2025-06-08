@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar Sesión | TecnoElite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="formLogin">
+    <h2>Iniciar Sesión</h2>
+    <input type="text" id="cedula" placeholder="Cédula" required />
+    <input type="password" id="contrasena" placeholder="Contraseña" required />
+    <div class="error" id="errorMsg"></div>
+    <button type="submit">Ingresar</button>
+  </form>
+
+  <script>
+    // Simulamos una base de datos de administradores usando localStorage
+    // Este ejemplo supone que en el registro se guardaron administradores en localStorage
+    // como un array bajo la clave "administradores"
+
+    const form = document.getElementById('formLogin');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      errorMsg.textContent = '';
+
+      const cedula = document.getElementById('cedula').value.trim();
+      const contrasena = document.getElementById('contrasena').value;
+
+      // Obtener lista de administradores desde localStorage
+      const listaAdmins = JSON.parse(localStorage.getItem('administradores')) || [];
+
+      // Buscar coincidencia
+      const adminEncontrado = listaAdmins.find(admin =>
+        admin.cedula === cedula && admin.contrasena === contrasena
+      );
+
+      if (adminEncontrado) {
+        // Guardar el admin activo en sessionStorage
+        sessionStorage.setItem('adminActivo', JSON.stringify(adminEncontrado));
+        alert('Inicio de sesión exitoso.');
+        window.location.href = 'admin.html';
+      } else {
+        errorMsg.textContent = 'Cédula o contraseña incorrectas.';
+      }
+    });
+  </script>
+
+</body>
+</html>

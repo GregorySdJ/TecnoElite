@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Especificaciones del Producto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f4f8;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px 20px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      border-radius: 12px;
+      margin-top: 40px;
+    }
+    .imagen-producto {
+      text-align: center;
+    }
+    .imagen-producto img {
+      width: 250px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 2rem;
+      color: #1a1a1a;
+    }
+    .precio {
+      text-align: center;
+      font-size: 1.4rem;
+      color: #1e88e5;
+      margin: 10px 0 25px;
+      font-weight: 600;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f0f0f5;
+      color: #333;
+    }
+    td {
+      color: #555;
+    }
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+    .btn-carrito {
+      background-color: #4caf50;
+      color: white;
+    }
+    .btn-carrito:hover {
+      background-color: #388e3c;
+    }
+    .btn-volver {
+      background-color: #9e9e9e;
+      color: white;
+    }
+    .btn-volver:hover {
+      background-color: #616161;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="imagen-producto">
+      <img src="https://via.placeholder.com/250x250?text=Producto" alt="Imagen del producto" />
+    </div>
+    <h1>Nombre del Producto</h1>
+    <p class="precio">$299.99</p>
+
+    <table>
+      <tr>
+        <th>Características</th>
+        <th>Detalles</th>
+      </tr>
+      <tr>
+        <td>Marca</td>
+        <td>TecnoElite</td>
+      </tr>
+      <tr>
+        <td>Pantalla</td>
+        <td>6.5" AMOLED</td>
+      </tr>
+      <tr>
+        <td>Procesador</td>
+        <td>Octa-Core 2.8GHz</td>
+      </tr>
+      <tr>
+        <td>RAM</td>
+        <td>8 GB</td>
+      </tr>
+      <tr>
+        <td>Almacenamiento</td>
+        <td>128 GB</td>
+      </tr>
+      <tr>
+        <td>Batería</td>
+        <td>5000 mAh</td>
+      </tr>
+      <tr>
+        <td>Sistema Operativo</td>
+        <td>Android 13</td>
+      </tr>
+      <tr>
+        <td>Cámara</td>
+        <td>Triple 64MP + 12MP + 8MP</td>
+      </tr>
+      <tr>
+        <td>Conectividad</td>
+        <td>5G, WiFi 6, Bluetooth 5.2</td>
+      </tr>
+    </table>
+
+    <div class="acciones">
+      <button class="btn-carrito">Agregar al carrito</button>
+      <button class="btn-volver" onclick="window.location.href='pagina2.html'">Volver al catálogo</button>
+    </div>
+  </div>
+</body>
+</html>

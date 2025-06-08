@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¡Gracias por tu compra!</title>
+  <style>
+    body {
+      background-color: #eef2f5;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      transition: opacity 0.5s ease;
+    }
+
+    .card h1 {
+      color: #27ae60;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto 0;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="mensajeGracias">
+    <h1>¡Gracias por tu pedido!</h1>
+    <p>procesando. Redirigiéndote a WhatsApp...</p>
+  </div>
+
+  <div class="card hidden" id="cargando">
+    <p>Conectando con WhatsApp</p>
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  const solicitud = JSON.parse(localStorage.getItem('ultimaSolicitud')) || null;
+  const numeroWhatsApp = "8297743499";
+
+  const mensajeGracias = document.getElementById("mensajeGracias");
+  const cargando = document.getElementById("cargando");
+
+  function redirigirConMensaje(url) {
+    mensajeGracias.classList.add("hidden");
+    cargando.classList.remove("hidden");
+
+    setTimeout(() => {
+      window.location.href = url;
+    }, 3000);
+  }
+
+  if (carrito.length > 0) {
+    // COMPRA
+    let mensaje = "Hola, quiero realizar una compra en TecnoElite. Estos son los productos que elegí:%0A";
+    let resumenHTML = "<h1>¡Gracias por tu compra!</h1><p>Resumen:</p><ul style='text-align:left;'>";
+
+    carrito.forEach((item, index) => {
+      mensaje += `${index + 1}. ${item.nombre} - $${item.precio.toFixed(2)}%0A`;
+      resumenHTML += `<li>${item.nombre} - $${item.precio.toFixed(2)}</li>`;
+    });
+
+    const total = carrito.reduce((sum, item) => sum + item.precio, 0);
+    mensaje += `%0ATotal: $${total.toFixed(2)}`;
+    resumenHTML += `</ul><p><strong>Total:</strong> $${total.toFixed(2)}</p>`;
+    resumenHTML += `<p>Redirigiendo a WhatsApp en 3 segundos...</p>`;
+
+    mensajeGracias.innerHTML = resumenHTML;
+    setTimeout(() => redirigirConMensaje(`https://wa.me/${numeroWhatsApp}?text=${mensaje}`), 4000);
+    localStorage.removeItem('carrito');
+
+  } else if (solicitud) {
+    // REPARACIÓN
+    let mensaje = `Hola, quiero solicitar una reparación con estos datos:%0A` +
+      `*Nombre:* ${solicitud.nombre}%0A` +
+      `*Equipo:* ${solicitud.equipo}%0A` +
+      `*Problema:* ${solicitud.problema}%0A` +
+      `*Contacto:* ${solicitud.contacto}%0A` +
+      `*Estado:* Pendiente`;
+
+    mensajeGracias.innerHTML = `
+      <h1>¡Gracias por tu solicitud!</h1>
+      <p><strong>Nombre:</strong> ${solicitud.nombre}</p>
+      <p><strong>Equipo:</strong> ${solicitud.equipo}</p>
+      <p><strong>Problema:</strong> ${solicitud.problema}</p>
+      <p><strong>Contacto:</strong> ${solicitud.contacto}</p>
+      <p>Redirigiendo a WhatsApp en 3 segundos...</p>
+    `;
+
+    setTimeout(() => redirigirConMensaje(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`), 4000);
+    localStorage.removeItem('ultimaSolicitud');
+
+  } else {
+    // SIN DATOS
+    mensajeGracias.innerHTML = "<h1>No hay datos para procesar</h1>";
+  }
+</script>
+</body>
+</html>

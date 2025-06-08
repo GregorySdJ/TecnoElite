@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bienvenido a TecnoElite</title>
+  <link rel="stylesheet" href="inicio.css" />
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+  <script src="inicio.js" defer></script>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <header>
+    <nav class="nav-principal">
+      <a href="#">Inicio</a>
+      <a href="pagina2.html">Tienda</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="contenido">
+    <img src="Logo TecnoElite.png" alt="Logo TecnoElite" class="logo-img" />
+    <p id="typing" class="slogan" aria-live="polite"></p>
+
+    <button onclick="window.location.href='pagina2.html'">
+      Tienda <span class="arrow">➜</span>
+    </button>
+
+    <p id="frase-dinamica" class="frase"></p>
+  </main>
+
+  <!-- Botones flotantes de administrador -->
+  <div class="admin-buttons">
+    <button onclick="window.location.href='registro.html'">Registrar Empleado</button>
+    <button onclick="window.location.href='login.html'">Inicial Adm.</button>
+  </div>
+
+  <footer id="contacto">
+    <p>© 2025 TecnoElite - Síguenos en 
+      <a href="https://web.facebook.com/gregoris.severino.1" aria-label="Facebook" target="_blank" rel="noopener noreferrer">Facebook</a> | 
+      <a href="https://www.instagram.com/creaciones.ggr_dji/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Administrador | TecnoElite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="formRegistro">
+    <h2>Registrar Administrador</h2>
+
+    <input type="text" id="nombre" placeholder="Nombre completo" required />
+    <input type="text" id="cedula" placeholder="Cédula" required />
+    <input type="text" id="numTrabajador" placeholder="Número de trabajador" required />
+    <input type="text" id="telefono" placeholder="Teléfono celular" required />
+    <input type="password" id="contrasena" placeholder="Contraseña" required />
+    <input type="password" id="confirmar" placeholder="Confirmar contraseña" required />
+    <input type="text" id="codigo" placeholder="Código administrador" required />
+
+    <div class="error" id="errorMsg"></div>
+
+    <button type="submit" id="btnRegistrar">Inicial Adm.</button>
+  </form>
+
+  <script>
+    document.getElementById('btnRegistrar').addEventListener('click', function (e) {
+      e.preventDefault();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = '';
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const cedula = document.getElementById('cedula').value.trim();
+      const numTrabajador = document.getElementById('numTrabajador').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const contrasena = document.getElementById('contrasena').value;
+      const confirmar = document.getElementById('confirmar').value;
+      const codigo = document.getElementById('codigo').value;
+
+      // Validaciones
+      if (!nombre || !cedula || !numTrabajador || !telefono || !contrasena || !confirmar || !codigo) {
+        errorMsg.textContent = "Todos los campos son obligatorios.";
+        return;
+      }
+
+      if (contrasena !== confirmar) {
+        errorMsg.textContent = "Las contraseñas no coinciden.";
+        return;
+      }
+
+      if (codigo !== "061712") {
+        errorMsg.textContent = "Código de administrador incorrecto.";
+        return;
+      }
+
+      const nuevoAdmin = {
+        nombre,
+        cedula,
+        numTrabajador,
+        telefono,
+        contrasena
+      };
+
+      // Guardar en localStorage
+      let listaAdmins = JSON.parse(localStorage.getItem('administradores')) || [];
+      listaAdmins.push(nuevoAdmin);
+      localStorage.setItem('administradores', JSON.stringify(listaAdmins));
+
+      // Guardar sesión activa
+      sessionStorage.setItem('adminActivo', JSON.stringify(nuevoAdmin));
+
+      // Redirigir
+      alert("Registro exitoso. Bienvenido, administrador.");
+      window.location.href = "admin.html";
+    });
+  </script>
+
+</body>
+</html>

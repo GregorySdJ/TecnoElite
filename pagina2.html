@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TecnoElite - Catálogo</title>
+  <link rel="stylesheet" href="pagina2.css" />
+  <script src="catalogo.js" defer></script>
+</head>
+<body>
+
+  <script>
+    // Mostrar botón Panel Admin si está logueado
+    document.addEventListener("DOMContentLoaded", () => {
+      const adminLogueado = localStorage.getItem("adminLogueado");
+      if (adminLogueado === "true") {
+        document.getElementById("btnAdminPanel").style.display = "block";
+      }
+    });
+  </script>
+
+  <!-- Botón flotante del carrito -->
+  <button onclick="toggleCarrito()" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0300c860;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: transform 0.2s;
+  " title="Ver carrito" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    🛒
+  </button>
+
+  <!-- Navegación -->
+  <header>
+    <nav class="nav-principal" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="pagina2.html" aria-current="page">Tienda</a>
+      <a href="Reparaciones.html">Reparaciones</a> 
+      <a href="#quienes-somos">¿Quiénes somos?</a>
+      <a href="#contacto">Contacto</a>
+    </nav> 
+  </header>
+
+  <button id="btnAdminPanel" onclick="location.href='admin.html'" style="
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0e76a8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  ">
+    Panel Admin
+  </button>
+
+  <main>
+    <h1>Catálogo de Productos</h1>
+
+    <!-- Filtro por categoría -->
+    <div id="filtroCategoria" style="margin-bottom: 30px; text-align: center;">
+      <label for="categoriaSelect" style="font-weight: bold; margin-right: 10px;">Categoría:</label>
+      <select id="categoriaSelect">
+        <option value="todos">Todos</option>
+        <option value="celular">Celulares</option>
+        <option value="reloj">Relojes</option>
+        <option value="auricular">Auriculares</option>
+        <option value="drone">Drones</option>
+        <option value="otros">Otros</option>
+      </select>
+    </div>
+
+    <!-- Buscador -->
+    <div id="buscador" style="text-align: center; margin: 30px 40px;">
+      <input 
+        type="text" 
+        id="inputBusqueda" 
+        placeholder="🔍 Buscar productos por nombre..." 
+        style="
+          padding: 12px 18px;
+          font-size: 16px;
+          width: 320px;
+          max-width: 90%;
+          border: none;
+          border-radius: 30px;
+          background: #f1f1f1;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          outline: none;
+          transition: all 0.3s ease;
+        " 
+        onfocus="this.style.boxShadow='0 4px 16px rgba(0, 200, 83, 0.5)'"
+        onblur="this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1)'"
+      >
+    </div>
+
+    <!-- Contenedor de productos -->
+    <section class="productos" id="productos-container" aria-live="polite">
+      <!-- Aquí se cargan dinámicamente los productos -->
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="contacto">
+    <p>© 2025 TecnoElite - Síguenos en 
+      <a href="https://web.facebook.com/gregoris.severino.1" aria-label="Facebook" target="_blank" rel="noopener noreferrer">Facebook</a> | 
+      <a href="https://www.instagram.com/creaciones.ggr_dji/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </p>
+  </footer>
+
+  <!-- Modal del carrito -->
+  <div id="carrito-contenedor" style="
+    display: none;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #1c1c1e;
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    font-family: 'Segoe UI', sans-serif;
+  ">
+    <h2 style="margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid #444; padding-bottom: 10px;">🛒 Tu Carrito</h2>
+    
+    <div id="carrito-items" style="margin-top: 10px;"></div>
+    
+    <div style="margin-top: 15px; border-top: 1px solid #444; padding-top: 10px; font-size: 1rem;">
+      <strong>Total:</strong> $<span id="total-carrito">0</span>
+    </div>
+    
+    <button id="finalizarCompra" style="
+      margin-top: 15px;
+      width: 100%;
+      background-color: #00c853;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    ">Finalizar compra</button>
+  </div>
+
+  <script>
+    // Variables globales para productos y carrito
+    let productosGlobal = [];
+    let carritoGlobal = [];
+
+    // Mostrar productos en el contenedor
+    function mostrarProductos(productos) {
+      const contenedor = document.getElementById("productos-container");
+      contenedor.innerHTML = "";
+
+      productos.forEach(p => {
+        const disponible = p.estado === "disponible";
+
+        const productoDiv = document.createElement("div");
+        productoDiv.classList.add("producto");
+        productoDiv.setAttribute("data-categoria", p.categoria);
+
+        productoDiv.innerHTML = `
+          <img src="${p.imagen}" alt="${p.nombre}" />
+          <h3>${p.nombre}</h3>
+          <p><strong>$${p.precio.toFixed(2)}</strong></p>
+          <p>${disponible ? '<span style="color:green;">Disponible</span>' : '<span style="color:red;">Agotado</span>'}</p>
+          <button ${disponible ? "" : "disabled"} class="agregar-carrito">Agregar al carrito</button>
+        `;
+
+        contenedor.appendChild(productoDiv);
+
+        if (disponible) {
+          productoDiv.querySelector("button.agregar-carrito").addEventListener("click", () => {
+            agregarAlCarrito(p);
+          });
+        }
+      });
+    }
+
+    // Agregar producto al carrito y guardar en localStorage
+    function agregarAlCarrito(producto) {
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      const index = carrito.findIndex(item => item.nombre === producto.nombre);
+
+      if (index >= 0) {
+        carrito[index].cantidad += 1;
+      } else {
+        carrito.push({ ...producto, cantidad: 1 });
+      }
+
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      carritoGlobal = carrito;
+      mostrarCarrito();
+      alert(`${producto.nombre} agregado al carrito.`);
+    }
+
+    // Mostrar carrito en el modal
+    function mostrarCarrito() {
+      const contenedorCarrito = document.getElementById("carrito-items");
+      const totalSpan = document.getElementById("total-carrito");
+
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      carritoGlobal = carrito;
+
+      contenedorCarrito.innerHTML = "";
+      let total = 0;
+
+      if (carrito.length === 0) {
+        contenedorCarrito.innerHTML = "<p>Tu carrito está vacío.</p>";
+        totalSpan.textContent = "0.00";
+        return;
+      }
+
+      carrito.forEach(item => {
+        total += item.precio * item.cantidad;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.style = "display:flex; justify-content: space-between; margin-bottom: 10px;";
+
+        itemDiv.innerHTML = `
+          <div>
+            <strong>${item.nombre}</strong><br />
+            Cantidad: ${item.cantidad} <br />
+            Precio unitario: $${item.precio.toFixed(2)}
+          </div>
+          <button aria-label="Eliminar ${item.nombre}" style="
+            background: #d32f2f; 
+            border: none; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            padding: 2px 8px;
+            height: fit-content;
+            align-self: center;
+          ">X</button>
+        `;
+
+        // Botón eliminar producto del carrito
+        itemDiv.querySelector("button").addEventListener("click", () => {
+          eliminarDelCarrito(item.nombre);
+        });
+
+        contenedorCarrito.appendChild(itemDiv);
+      });
+
+      totalSpan.textContent = total.toFixed(2);
+    }
+
+    // Eliminar producto del carrito
+    function eliminarDelCarrito(nombre) {
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      carrito = carrito.filter(item => item.nombre !== nombre);
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      carritoGlobal = carrito;
+      mostrarCarrito();
+    }
+
+    // Alternar visibilidad carrito
+    function toggleCarrito() {
+      const carritoModal = document.getElementById("carrito-contenedor");
+      carritoModal.style.display = carritoModal.style.display === "block" ? "none" : "block";
+      if (carritoModal.style.display === "block") {
+        mostrarCarrito();
+      }
+    }
+
+    // Filtrar productos
+    function filtrarProductos() {
+      const categoria = document.getElementById("categoriaSelect").value;
+      const terminoBusqueda = document.getElementById("inputBusqueda").value.toLowerCase();
+
+      const filtrados = productosGlobal.filter(p => {
+        const categoriaMatch = (categoria === "todos" || p.categoria === categoria);
+        const nombreMatch = p.nombre.toLowerCase().includes(terminoBusqueda);
+        return categoriaMatch && nombreMatch;
+      });
+
+      mostrarProductos(filtrados);
+    }
+
+    // Evento DOMContentLoaded para inicializar
+    document.addEventListener("DOMContentLoaded", () => {
+      // Cargar catálogo desde localStorage
+      let catalogo = JSON.parse(localStorage.getItem("catalogo"));
+      if (!catalogo || catalogo.length === 0) {
+        alert("No hay productos disponibles en el catálogo.");
+        catalogo = [];
+      }
+      productosGlobal = catalogo;
+
+      mostrarProductos(productosGlobal);
+      mostrarCarrito();
+
+      // Evento filtro
+      document.getElementById("categoriaSelect").addEventListener("change", filtrarProductos);
+
+      // Evento buscador
+      document.getElementById("inputBusqueda").addEventListener("input", filtrarProductos);
+
+      // Botón finalizar compra
+      document.getElementById("finalizarCompra").addEventListener("click", () => {
+        if (carritoGlobal.length === 0) {
+          alert("Tu carrito está vacío.");
+          return;
+        }
+        window.location.href = "gracias.html";
+      });
+    });
+  </script>
+</body>
+</html>

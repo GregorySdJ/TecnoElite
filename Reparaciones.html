@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reparaciones - TecnoElite</title>
+  <link rel="stylesheet" href="Reparacion.css" />
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#tienda">Tienda</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio">
+      <h1>Reparaciones</h1>
+    </section>
+
+    <section id="tienda">
+      <h2>Tienda</h2>
+      <p>Contenido de la tienda...</p>
+    </section>
+
+    <section id="reparacion">
+      <h2>Solicita la reparación de tu equipo</h2>
+      <form id="formReparacion">
+        <label for="nombre">Nombre completo:</label>
+        <input type="text" id="nombre" name="nombre" required />
+        <span class="error" id="errorNombre"></span>
+
+        <label for="equipo">Equipo a reparar:</label>
+        <select id="equipo" name="equipo" required>
+          <option value="">-- Selecciona un equipo --</option>
+          <option value="Samsung Galaxy S23">Samsung Galaxy S23</option>
+          
+          <option value="MacBook Air M2">MacBook Air M2</option>
+          <option value="iPad Pro">iPad Pro</option>
+          <option value="AirPods Pro">AirPods Pro</option>
+          <option value="Apple Watch Series 8">Apple Watch Series 8</option>
+
+          <option value="iPhone 6." >iPhone 6</option>"
+          <option value="iPhone 6 Plus.">iPhone 6 Plus.</option>
+          <option value="iPhone 6s.">iPhone 6s.</option>
+          <option value="6s Plus.">6s Plus.</option>
+          <option value="iPhone SE.">iPhone SE</option>
+          <option value="iPhone 7.">iPhone 7.</option>
+          <option value="iPhone 7 Plus.">iPhone 7 Plus.</option>
+          <option value="iPhone 8.">iPhone 8.</option>
+          <option value="iPhone 8 Plus.">iPhone 8 Plus.</option>
+          <option value="iPhone X.">iPhone X.</option>
+          <option value="iPhone XS.">iPhone XS.</option>
+          <option value="iPhone XS Max.">iPhone XS Max.</option>
+          <option value="iPhone XR.">iPhone XR.</option>
+          <option value="iPhone 11.">iPhone 11.</option>
+          <option value="iPhone 11 Pro.">iPhone 11 Pro.</option>
+          <option value="iPhone 11 Pro Max.">iPhone 11 Pro Max.</option>
+          <option value="iPhone SE segunda G.">iPhone SE segunda G.</option>
+          <option value="iPhone 12.">iPhone 12.</option>
+          <option value="iPhone 12 mini.">iPhone 12 mini.</option>
+          <option value="iPhone 12 Pro.">iPhone 12 Pro.</option>
+          <option value="iPhone 12 Pro Max.">iPhone 12 Pro Max.</option>
+          <option value="iPhone 13.">iPhone 13.</option>
+          <option value="iPhone 13 mini.">iPhone 13 mini.</option>
+          <option value="Xiaomi 13 Pro">Xiaomi 13 Pro</option>
+          <option value="iPhone 13 Pro Max.">iPhone 13 Pro Max.</option>
+          <option value="SE (3ª generación iPhone SE.">SE (3ª generación iPhone SE.</option>
+          <option value="iPhone 14.">iPhone 14.</option>
+          <option value="iPhone 14 Plus.">iPhone 14 Plus.</option>
+          <option value="iPhone 14 Pro">iPhone 14 Pro</option>
+          <option value="iPhone 14 Pro Max.">iPhone 14 Pro Max.</option>
+          <option value="iPhone 15.">iPhone 15.</option>
+          <option value="iPhone 15 Plus.">iPhone 15 Plus.</option>
+          <option value="iPhone 15 Pro.">iPhone 15 Pro.</option>
+            "></option>
+          <!-- agrega más modelos aquí -->
+        </select>
+        <span class="error" id="errorEquipo"></span>
+
+        <label for="problema">Descripción del problema:</label>
+        <textarea id="problema" name="problema" rows="3" required></textarea>
+        <span class="error" id="errorProblema"></span>
+
+        <label for="contacto">Teléfono o Email:</label>
+        <input type="text" id="contacto" name="contacto" required />
+        <span class="error" id="errorContacto"></span>
+
+        <button type="submit">Enviar solicitud</button>
+      </form>
+
+      <h3>Solicitudes enviadas</h3>
+      <div id="listaSolicitudes" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('formReparacion');
+    const listaSolicitudes = document.getElementById('listaSolicitudes');
+
+    let solicitudes = JSON.parse(localStorage.getItem('solicitudes')) || [];
+
+    function renderSolicitudes() {
+      listaSolicitudes.innerHTML = '';
+
+      if (solicitudes.length === 0) {
+        listaSolicitudes.innerHTML = '<p>No hay solicitudes aún.</p>';
+        return;
+      }
+
+      solicitudes.forEach((solicitud, index) => {
+        const div = document.createElement('div');
+        div.classList.add('solicitud');
+        div.innerHTML = `
+          <strong>Solicitud #${index + 1}</strong><br>
+          <span><strong>Nombre:</strong> ${solicitud.nombre}</span><br>
+          <span><strong>Equipo:</strong> ${solicitud.equipo}</span><br>
+          <span><strong>Problema:</strong> ${solicitud.problema}</span><br>
+          <span><strong>Contacto:</strong> ${solicitud.contacto}</span><br>
+          <span><strong>Estado:</strong> <em>${solicitud.estado || 'Pendiente'}</em></span>
+        `;
+        listaSolicitudes.appendChild(div);
+      });
+    }
+
+    function guardarSolicitudes() {
+      localStorage.setItem('solicitudes', JSON.stringify(solicitudes));
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nuevaSolicitud = {
+        nombre: form.nombre.value.trim(),
+        equipo: form.equipo.value.trim(),
+        problema: form.problema.value.trim(),
+        contacto: form.contacto.value.trim(),
+        estado: 'Pendiente'
+      };
+
+      const camposVacios = Object.values(nuevaSolicitud).some(val => val === '');
+
+      if (camposVacios) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
+
+      // Número de WhatsApp destino con código país y sin símbolos (ejemplo: México 521+numero)
+      const telefonoTecnoElite = '18297743499'; // Cambia este número por el tuyo real
+
+      // Crear mensaje para WhatsApp
+      const mensajeWhatsApp =
+        `Solicitud de reparación:%0A` +
+        `Nombre: ${nuevaSolicitud.nombre}%0A` +
+        `Equipo: ${nuevaSolicitud.equipo}%0A` +
+        `Problema: ${nuevaSolicitud.problema}%0A` +
+        `Contacto: ${nuevaSolicitud.contacto}`;
+
+      // Abrir WhatsApp en nueva pestaña
+      window.open(`https://wa.me/${8297743499}?text=${mensajeWhatsApp}`, '_blank');
+
+      // Guardar solicitud localmente y mostrar en historial
+      solicitudes.push(nuevaSolicitud);
+      guardarSolicitudes();
+      renderSolicitudes();
+      form.reset();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSolicitudes();
+    });
+  </script>
+
+  <script src="Reparacion.js" defer></script>
+</body>
+</html>

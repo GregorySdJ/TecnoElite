@@ -1,0 +1,293 @@
+/* reparacion.css - Estilos para la sección Reparación (dark mode) */
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #121212;
+  color: #e0e0e0;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header y navegación */
+header {
+  background: #1e1e1e;
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+}
+
+nav a {
+  color: #81c784;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  color: #4caf50;
+  outline: none;
+}
+
+/* Main content */
+main {
+  flex: 1;
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Sección Inicio */
+#inicio h1 {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #4caf50;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Sección Tienda */
+#tienda {
+  margin-bottom: 60px;
+}
+
+#tienda h2 {
+  font-size: 2rem;
+  color: #81c784;
+  margin-bottom: 10px;
+}
+
+#tienda p {
+  font-size: 1.1rem;
+  color: #ccc;
+}
+
+/* Sección Reparacion */
+#reparacion {
+  background: linear-gradient(145deg, #1f1f22, #2b2b2e);
+  border-radius: 18px;
+  padding: 30px 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+#reparacion h2 {
+  font-size: 2rem;
+  color: #4caf50;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Formulario */
+form#formReparacion {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+form label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #a3a3a3;
+}
+
+form input[type="text"],
+form textarea {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background-color: #2e2e31;
+  color: #f0f0f5;
+  font-size: 1rem;
+  resize: vertical;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 8px #4caf50;
+  background-color: #353537;
+}
+
+/* Select de equipos */
+#reparacion select {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #2c2c2e;
+  color: #f0f0f5;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #4caf50 50%),
+    linear-gradient(135deg, #4caf50 50%, transparent 50%),
+    linear-gradient(to right, #333, #333);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 25px) 0.5em;
+  background-size: 5px 5px, 5px 5px, 1px 1.5em;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+#reparacion select:focus {
+  outline: none;
+  border-color: #4caf50;
+  background-color: #323234;
+}
+
+/* Botón enviar */
+form button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 14px 0;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+form button[type="submit"]:hover,
+form button[type="submit"]:focus-visible {
+  background-color: #3a9d3a;
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* Lista de solicitudes */
+#reparacion h3 {
+  margin-top: 50px;
+  font-size: 1.6rem;
+  color: #81c784;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+#listaSolicitudes {
+  margin-top: 25px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Cada solicitud */
+.solicitud {
+  background-color: #2c2c2f;
+  border-left: 6px solid #4caf50;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+  color: #ddd;
+  transition: transform 0.2s ease;
+}
+
+.solicitud:hover,
+.solicitud:focus-within {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(76,175,80,0.7);
+}
+
+.solicitud strong {
+  color: #a5d6a7;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.solicitud span {
+  display: block;
+  margin: 3px 0;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.solicitud em {
+  color: #c5e1a5;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Scrollbar personalizado WebKit */
+#listaSolicitudes::-webkit-scrollbar {
+  width: 10px;
+}
+
+#listaSolicitudes::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 8px;
+}
+
+#listaSolicitudes::-webkit-scrollbar-thumb {
+  background-color: #4caf50;
+  border-radius: 8px;
+  border: 2px solid #1e1e1e;
+}
+
+/* Firefox scrollbar */
+@-moz-document url-prefix() {
+  #listaSolicitudes {
+    scrollbar-width: thin;
+    scrollbar-color: #4caf50 #1e1e1e;
+  }
+}
+
+/* Botón eliminar solicitud */
+.eliminar-btn {
+  margin-top: 6px;
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.eliminar-btn:hover,
+.eliminar-btn:focus-visible {
+  background-color: #c0392b;
+  outline: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  main {
+    padding: 30px 15px;
+  }
+  #reparacion {
+    padding: 25px 20px;
+  }
+  nav ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel Administrador | TecnoElite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .admin-info {
+      margin-bottom: 20px;
+    }
+    #productosTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    #productosTable th, #productosTable td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    #productosTable th {
+      background-color: #007bff;
+      color: white;
+    }
+    img.producto-img {
+      width: 60px;
+      height: auto;
+      border-radius: 4px;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 20px;
+      margin-bottom: 20px;
+    }
+    form label {
+      font-weight: bold;
+      align-self: center;
+    }
+    form input[type="text"],
+    form input[type="number"],
+    form select {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    form input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-left: 5px;
+    }
+    form button {
+      grid-column: 1 / -1;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    form button:hover {
+      background-color: #218838;
+    }
+    button.eliminar-btn {
+      background-color: #dc3545;
+      border: none;
+      padding: 6px 10px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    button.eliminar-btn:hover {
+      background-color: #c82333;
+    }
+    button.editar-btn {
+      background-color: #007bff;
+      border: none;
+      padding: 6px 10px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button.editar-btn:hover {
+      background-color: #0056b3;
+    }
+    #cancelarEdicion {
+      grid-column: 1 / -1;
+      padding: 12px;
+      background-color: #ffc107;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    #cancelarEdicion:hover {
+      background-color: #e0a800;
+    }
+    #cerrarSesion {
+      padding: 10px 15px;
+      background-color: #ffc107;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    #cerrarSesion:hover {
+      background-color: #e0a800;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Panel del Administrador - TecnoElite</h1>
+  </header>
+
+  <main>
+    <div class="admin-info" id="adminInfo">
+      <p><strong>Bienvenido:</strong> <span id="adminNombre"></span></p>
+      <p><strong>Cédula:</strong> <span id="adminCedula"></span></p>
+      <p><strong>Teléfono:</strong> <span id="adminTelefono"></span></p>
+      <p><strong>Número de Trabajador:</strong> <span id="adminTrabajador"></span></p>
+    </div>
+
+    <button id="cerrarSesion">Cerrar sesión</button>
+
+    <h2>Productos registrados</h2>
+    <table id="productosTable">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio ($)</th>
+          <th>Categoría</th>
+          <th>Agotado</th>
+          <th>Oferta</th>
+          <th>Destacado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Productos se inyectan aquí -->
+      </tbody>
+    </table>
+
+    <h2 id="formTitle">Agregar nuevo producto</h2>
+    <form id="formAgregarProducto">
+      <label for="inputNombre">Nombre:</label>
+      <input type="text" id="inputNombre" required />
+
+      <label for="inputPrecio">Precio:</label>
+      <input type="number" id="inputPrecio" step="0.01" min="0" required />
+
+      <label for="inputCategoria">Categoría:</label>
+      <select id="inputCategoria" required>
+        <option value="">Seleccione</option>
+        <option value="Celular">Celular</option>
+        <option value="Reloj">Reloj</option>
+        <option value="Auricular">Auricular</option>
+        <option value="Dron">Dron</option>
+      </select>
+
+      <label for="inputImagen">URL Imagen:</label>
+      <input type="text" id="inputImagen" placeholder="https://ejemplo.com/img.jpg" required />
+
+      <label>Agotado:</label>
+      <input type="checkbox" id="inputAgotado" />
+
+      <label>Oferta:</label>
+      <input type="checkbox" id="inputOferta" />
+
+      <label>Destacado:</label>
+      <input type="checkbox" id="inputDestacado" />
+
+      <button type="submit" id="btnSubmit">Agregar producto</button>
+      <button type="button" id="cancelarEdicion">Cancelar edición</button>
+    </form>
+  </main>
+
+  <script>
+    // Verificar admin activo
+    const adminData = sessionStorage.getItem('adminActivo');
+    if (!adminData) {
+      alert('Acceso no autorizado. Por favor inicia sesión.');
+      window.location.href = 'login.html';
+    } else {
+      const admin = JSON.parse(adminData);
+      document.getElementById('adminNombre').textContent = admin.nombre;
+      document.getElementById('adminCedula').textContent = admin.cedula;
+      document.getElementById('adminTelefono').textContent = admin.telefono;
+      document.getElementById('adminTrabajador').textContent = admin.numTrabajador;
+    }
+
+    const tablaProductosBody = document.querySelector('#productosTable tbody');
+    const formAgregar = document.getElementById('formAgregarProducto');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const cancelarEdicionBtn = document.getElementById('cancelarEdicion');
+    const formTitle = document.getElementById('formTitle');
+
+    let editIndex = null; // Índice del producto en edición
+
+    function obtenerProductos() {
+      const productos = localStorage.getItem('productos');
+      return productos ? JSON.parse(productos) : [];
+    }
+
+    function guardarProductos(productos) {
+      localStorage.setItem('productos', JSON.stringify(productos));
+    }
+
+    function mostrarProductos() {
+      const productos = obtenerProductos();
+      tablaProductosBody.innerHTML = '';
+      productos.forEach((producto, index) => {
+        const fila = document.createElement('tr');
+
+        fila.innerHTML = `
+          <td><img src="${producto.imagen}" alt="${producto.nombre}" class="producto-img"></td>
+          <td>${producto.nombre}</td>
+          <td>${producto.precio.toFixed(2)}</td>
+          <td>${producto.categoria}</td>
+          <td>${producto.agotado ? 'Sí' : 'No'}</td>
+          <td>${producto.oferta ? 'Sí' : 'No'}</td>
+          <td>${producto.destacado ? 'Sí' : 'No'}</td>
+          <td>
+            <button class="editar-btn" data-index="${index}">Editar</button>
+            <button class="eliminar-btn" data-index="${index}">Eliminar</button>
+          </td>
+        `;
+        tablaProductosBody.appendChild(fila);
+      });
+    }
+
+    function eliminarProducto(index) {
+      let productos = obtenerProductos();
+      productos.splice(index, 1);
+      guardarProductos(productos);
+      mostrarProductos();
+      alert('Producto eliminado correctamente.');
+      // Si estaba editando ese producto, cancelar edición
+      if (editIndex === index) cancelarEdicion();
+    }
+
+    function cargarProductoEnFormulario(index) {
+      const productos = obtenerProductos();
+      const producto = productos[index];
+      if (!producto) return;
+
+      document.getElementById('inputNombre').value = producto.nombre;
+      document.getElementById('inputPrecio').value = producto.precio;
+      document.getElementById('inputCategoria').value = producto.categoria;
+      document.getElementById('inputImagen').value = producto.imagen;
+      document.getElementById('inputAgotado').checked = producto.agotado;
+      document.getElementById('inputOferta').checked = producto.oferta;
+      document.getElementById('inputDestacado').checked = producto.destacado;
+
+      editIndex = index;
+      btnSubmit.textContent = 'Guardar cambios';
+      formTitle.textContent = 'Editar producto';
+      cancelarEdicionBtn.style.display = 'inline-block';
+    }
+
+    function cancelarEdicion() {
+      editIndex = null;
+      formAgregar.reset();
+      btnSubmit.textContent = 'Agregar producto';
+      formTitle.textContent = 'Agregar nuevo producto';
+      cancelarEdicionBtn.style.display = 'none';
+    }
+
+    formAgregar.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('inputNombre').value.trim();
+      const precio = parseFloat(document.getElementById('inputPrecio').value);
+      const categoria = document.getElementById('inputCategoria').value;
+      const imagen = document.getElementById('inputImagen').value.trim();
+      const agotado = document.getElementById('inputAgotado').checked;
+      const oferta = document.getElementById('inputOferta').checked;
+      const destacado = document.getElementById('inputDestacado').checked;
+
+      if (!nombre || !categoria || !imagen || isNaN(precio) || precio < 0) {
+        alert('Por favor, completa todos los campos correctamente.');
+        return;
+      }
+
+      const productos = obtenerProductos();
+
+      if (editIndex !== null) {
+        // Editar producto
+        productos[editIndex] = { nombre, precio, categoria, imagen, agotado, oferta, destacado };
+        alert('Producto actualizado correctamente.');
+      } else {
+        // Agregar producto nuevo
+        productos.push({ nombre, precio, categoria, imagen, agotado, oferta, destacado });
+        alert('Producto agregado correctamente.');
+      }
+
+      guardarProductos(productos);
+      mostrarProductos();
+      cancelarEdicion();
+    });
+
+    // Manejo de clicks en botones Editar y Eliminar
+    tablaProductosBody.addEventListener('click', function (e) {
+      if (e.target.classList.contains('eliminar-btn')) {
+        const index = parseInt(e.target.dataset.index, 10);
+        if (confirm('¿Estás seguro de eliminar este producto?')) {
+          eliminarProducto(index);
+        }
+      } else if (e.target.classList.contains('editar-btn')) {
+        const index = parseInt(e.target.dataset.index, 10);
+        cargarProductoEnFormulario(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    cancelarEdicionBtn.addEventListener('click', cancelarEdicion);
+
+    // Mostrar productos al cargar la página
+    mostrarProductos();
+
+    // Cerrar sesión
+    document.getElementById('cerrarSesion').addEventListener('click', () => {
+      sessionStorage.removeItem('adminActivo');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
